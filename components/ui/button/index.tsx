@@ -1,7 +1,8 @@
-import IconButton, {IconButtonProps} from "./icon-button";
 
-const Icon = (props: IconButtonProps) => <IconButton {...props}/>;
+import IconButton from "./icon-button";
+import OutlinedButton from "./outlined-button";
 
 export default {
-	Icon
+	Icon: IconButton,
+	Outlined: OutlinedButton
 };

@@ -17,6 +17,15 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "The app accesses your photos to let you share them to show your favourite places"
+        }
+      ]
+    ],
     "ios": {
       "supportsTablet": true
     },

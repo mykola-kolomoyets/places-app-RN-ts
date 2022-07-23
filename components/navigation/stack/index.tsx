@@ -31,7 +31,7 @@ const StackNavigator = () => {
 	return (
 		<Stack.Navigator screenOptions={initialStackNavigatorProps}>
 			{Object.entries(screens).map(([name, component]) => (
-				<Stack.Screen {...{name: name as StackScreens, component, options: screenOptions[name as StackScreens]}}/>
+				<Stack.Screen key={name} {...{name: name as StackScreens, component, options: screenOptions[name as StackScreens]}}/>
 			))}
 		</Stack.Navigator>
 	);
