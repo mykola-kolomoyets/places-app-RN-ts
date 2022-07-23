@@ -1,26 +1,31 @@
-import {useNavigation} from "@react-navigation/native";
+import {FunctionComponent} from "react";
+import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
 import {
 	NativeStackNavigationOptions,
 	NativeStackNavigationProp,
 	NativeStackScreenProps
 } from "@react-navigation/native-stack";
-import {FunctionComponent} from "react";
+
+import {Location} from "../types/places";
+
 import {Colors} from "../styles/colors";
 
 export enum StackScreens {
 	all = "All places",
 	addPlace = "Add Place",
-	placeDetails = "Place details"
+	placeDetails = "Place details",
+	map = "Map"
 }
 
 export type StackParamsList = {
 	[StackScreens.all]: undefined,
-	[StackScreens.addPlace]: undefined,
-	[StackScreens.placeDetails]: { id: string }
+	[StackScreens.addPlace]: {location: Location} | undefined,
+	[StackScreens.placeDetails]: { id: string },
+	[StackScreens.map]: undefined
 };
 
 export type ScreensList = {
-	[key in StackScreens]: FunctionComponent<{}>;
+	[key in StackScreens]: FunctionComponent<{}> | FunctionComponent<StackScreen<key>>;
 };
 
 export type ScreenProps<T extends StackScreens> = {
@@ -40,6 +45,9 @@ export const initialScreenProps: ScreenOptions = {
 	[StackScreens.placeDetails]: {},
 	[StackScreens.addPlace]: {
 		title: "Add a new place"
+	},
+	[StackScreens.map]: {
+		title: "Pick the location"
 	}
 };
 
@@ -56,3 +64,5 @@ export const initialStackNavigatorProps: NativeStackNavigationOptions = {
 export type StackScreen<ScreenName extends StackScreens> = NativeStackScreenProps<StackParamsList, ScreenName>
 
 export const useStackedNavigation = () => useNavigation<NativeStackNavigationProp<StackParamsList>>();
+
+export const useStackedRoute = <ScreenName extends StackScreens>() => useRoute<RouteProp<StackParamsList, ScreenName>>()

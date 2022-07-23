@@ -14,11 +14,24 @@ export default StyleSheet.create({
 		backgroundColor: Colors.primary100,
 		
 		borderRadius: 4,
+		
+		overflow: "hidden"
 	},
 	
-	image: {
+	actions: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+	},
+	
+	actionButton: {
+		flex: 1,
+	},
+	
+	mapPreview: {
 		width: "100%",
-		height: "100%"
+		height: "100%",
+		borderRadius: 4,
 	}
 	
 });

@@ -7,13 +7,16 @@ import {imagePickerOptions} from "../../../utils/constants/image-picker";
 import styles from './image-picker.styles';
 import Button from "../button";
 
-const ImagePicker: FC = () => {
+type ImagePickerProps = {
+	onPick: (imageUri: string) => void;
+}
+const ImagePicker: FC<ImagePickerProps> = ({onPick}) => {
 	const [cameraPermissionStatus, requestCameraPermission] = useCameraPermissions();
 	
 	const [image, setImage] = useState("");
 	
 	
-	const verifyCameraPermissions = async() => {
+	const verifyCameraPermissions = async () => {
 		if (cameraPermissionStatus?.status === PermissionStatus.UNDETERMINED) {
 			const permissionResponse = await requestCameraPermission();
 			
@@ -40,7 +43,12 @@ const ImagePicker: FC = () => {
 		
 		const image = await launchCameraAsync(imagePickerOptions);
 		
-		!image.cancelled && setImage(image.uri);
+		if(!image.cancelled) {
+			setImage(image.uri);
+			
+			onPick(image.uri);
+		}
+		
 	};
 	
 	return (
@@ -48,7 +56,7 @@ const ImagePicker: FC = () => {
 			<View style={styles.preview}>
 				{image ? <Image style={styles.image} source={{uri: image}}/> : (
 					<Text>No image chosen</Text>
-				) }
+				)}
 			</View>
 			
 			<Button.Outlined title="Take image" leftAddon="camera" onPress={onTakeImagePress}/>
