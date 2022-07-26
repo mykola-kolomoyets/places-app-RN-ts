@@ -8,8 +8,12 @@ import {StackScreen, StackScreens} from "../../utils/navigation/stack";
 import Place from "../../utils/types/places";
 
 import PlaceForm from "../../components/layout/places-form";
+import {sendPushNotification} from "../../utils/notifications";
+import useTokenStore from "../../store/token";
 
 const AddPlace: FC<StackScreen<StackScreens.addPlace>> = ({navigation}) => {
+	const { token } = useTokenStore();
+	
 	const scheduleNotification = () => {
 		return Notifications.scheduleNotificationAsync({
 			content: {
@@ -24,6 +28,8 @@ const AddPlace: FC<StackScreen<StackScreens.addPlace>> = ({navigation}) => {
 	
 	const onPlaceAdd = async (place: Place) => {
 		await scheduleNotification();
+		
+		await sendPushNotification(token!);
 		
 		PlacesService.addPlace(place).then(() => {
 			navigation.navigate(StackScreens.all, {place});

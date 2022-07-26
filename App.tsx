@@ -1,11 +1,18 @@
 import {Fragment, useEffect, useState} from "react";
+import {Platform} from "react-native";
 import {StatusBar} from 'expo-status-bar';
 import AppLoading from "expo-app-loading";
 import * as Notifications from 'expo-notifications';
+import {ExpoPushToken} from "expo-notifications";
+
+import Database from './db';
+
+import useTokenStore from "./store/token";
+
+import {allowsNotificationsAsync, configurePushNotifications, requestPermissionsAsync} from "./utils/notifications";
 
 import Navigation from "./components/navigation";
 
-import Database from './db';
 
 Notifications.setNotificationHandler({
 	handleNotification: async () => {
@@ -17,25 +24,9 @@ Notifications.setNotificationHandler({
 	}
 });
 
-const allowsNotificationsAsync = async () => {
-	const settings = await Notifications.getPermissionsAsync();
-	return (
-		settings.granted || settings.ios?.status === Notifications.IosAuthorizationStatus.PROVISIONAL
-	);
-}
-
-const requestPermissionsAsync = async () => {
-	return await Notifications.requestPermissionsAsync({
-		ios: {
-			allowAlert: true,
-			allowBadge: true,
-			allowSound: true,
-			allowAnnouncements: true,
-		},
-	});
-}
-
 export default function App() {
+	const { setToken } = useTokenStore();
+	
 	const [dbInitialized, setDbInitialized] = useState(false);
 	
 	useEffect(() => {
@@ -51,12 +42,26 @@ export default function App() {
 			console.log(notification);
 		});
 		
+		let tokenData: ExpoPushToken;
+		Notifications.getExpoPushTokenAsync().then((data) => {
+			tokenData = data;
+			console.log(data);
+			setToken(data);
+		});
+		
+		if (Platform.OS === 'android') {
+			Notifications.setNotificationChannelAsync('default', {
+				name: 'default',
+				importance: Notifications.AndroidImportance.DEFAULT
+			});
+		}
+		
+		configurePushNotifications();
+		
 		return () => {
 			submission.remove();
 		}
 	}, []);
-	
-
 	
 	if (!dbInitialized) return <AppLoading/>;
 	
