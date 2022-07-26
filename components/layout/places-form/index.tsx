@@ -6,9 +6,12 @@ import LocationPicker from "../../ui/location-picker";
 import Button from "../../ui/button";
 
 import styles from "./places-form.styles";
-import {Location} from "../../../utils/types/places";
+import Place, {Location} from "../../../utils/types/places";
 
-const PlaceForm: FC = () => {
+type PlaceFormProps = {
+	onPlaceAdd: (place: Place) => void;
+};
+const PlaceForm: FC<PlaceFormProps> = ({onPlaceAdd}) => {
 	const [title, setTitle] = useState("");
 	const [imageUri, setImageUri] = useState("");
 	
@@ -25,7 +28,15 @@ const PlaceForm: FC = () => {
 	}
 	
 	const onSavePlacePress = () => {
-		console.log({title, imageUri, locationAddress, location});
+		const placeToAdd = new Place({
+			id: Math.random().toString(),
+			title,
+			location: location!,
+			address: locationAddress,
+			imageUri
+		});
+		
+		onPlaceAdd(placeToAdd);
 	};
 	
 	return (

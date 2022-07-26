@@ -6,7 +6,7 @@ import {
 	NativeStackScreenProps
 } from "@react-navigation/native-stack";
 
-import {Location} from "../types/places";
+import Place, {Location} from "../types/places";
 
 import {Colors} from "../styles/colors";
 
@@ -18,10 +18,10 @@ export enum StackScreens {
 }
 
 export type StackParamsList = {
-	[StackScreens.all]: undefined,
-	[StackScreens.addPlace]: {location: Location} | undefined,
+	[StackScreens.all]: { place: Place } | undefined,
+	[StackScreens.addPlace]: { location: Location } | undefined,
 	[StackScreens.placeDetails]: { id: string },
-	[StackScreens.map]: undefined
+	[StackScreens.map]: { initialLocation: Location } | undefined
 };
 
 export type ScreensList = {
@@ -42,7 +42,9 @@ export const initialScreenProps: ScreenOptions = {
 	[StackScreens.all]: {
 		title: "Your favourite places"
 	},
-	[StackScreens.placeDetails]: {},
+	[StackScreens.placeDetails]: {
+		title: 'Loading...'
+	},
 	[StackScreens.addPlace]: {
 		title: "Add a new place"
 	},
@@ -53,7 +55,7 @@ export const initialScreenProps: ScreenOptions = {
 
 export const initialStackNavigatorProps: NativeStackNavigationOptions = {
 	headerStyle: {
-		backgroundColor: Colors.primary500,
+		backgroundColor: Colors.primary500
 	},
 	headerTintColor: Colors.gray700,
 	contentStyle: {

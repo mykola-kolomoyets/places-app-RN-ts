@@ -25,7 +25,8 @@ const StackNavigator = () => {
 		},
 		[StackScreens.placeDetails]: {
 			...initialScreenProps[StackScreens.placeDetails]
-		}
+		},
+		[StackScreens.map]: {...initialScreenProps[StackScreens.map]}
 	};
 	
 	return (

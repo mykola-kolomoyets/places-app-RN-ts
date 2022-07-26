@@ -12,5 +12,9 @@ export default StyleSheet.create({
 		fontSize: 16,
 		
 		color: Colors.primary200
+	},
+	
+	container: {
+		padding: 18
 	}
 });
