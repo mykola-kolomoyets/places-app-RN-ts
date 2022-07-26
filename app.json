@@ -24,6 +24,13 @@
         {
           "cameraPermission": "The app accesses your photos to let you share them to show your favourite places"
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./local/assets/icon.png",
+          "color": "#ffffff"
+        }
       ]
     ],
     "ios": {
